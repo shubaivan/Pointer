@@ -1,0 +1,19 @@
+{
+    "name": "shuba/search-aggregator",
+    "authors": [
+        {
+            "name": "Shuba Ivan",
+            "email": "shuba.ivan.vikt@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "version": "1.0.0",
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shuba\\SearchAggregator\\": "src/"
+        }
+    }
+}
