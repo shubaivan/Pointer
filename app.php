@@ -7,13 +7,17 @@ use Shuba\SearchAggregator\Adapters\GoogleAdapter;
 use GuzzleHttp\Client;
 use Shuba\SearchAggregator\Aggregator;
 use Dtkahl\ArrayTools\Map;
+use Shuba\SearchAggregator\Helper\ExtendsMap;
+use Shuba\SearchAggregator\Adapters\YahooAdapter;
 
 $client = new Client();
-$google = new GoogleAdapter($client, new Map());
+$googleAdapter = new GoogleAdapter($client, new Map());
+$yahooAdapter = new YahooAdapter($client, new Map());
 
-$aggregator = new Aggregator(new Map());
+$aggregator = new Aggregator(new ExtendsMap());
 try {
-    $aggregator->setAdapterInterface($google);
+    $aggregator->setAdapterInterface($googleAdapter);
+    $aggregator->setAdapterInterface($yahooAdapter);
     $aggregator->sendRequest('Cherkassy');
     var_dump($aggregator->getResult());
 } catch (\Exception $e) {

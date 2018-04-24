@@ -79,7 +79,7 @@ class ResultEntity
     public function __invoke()
     {
         return [
-            'test' => 1
+            'url' => $this->getUrl()
         ];
     }
 }

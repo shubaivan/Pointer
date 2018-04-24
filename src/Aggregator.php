@@ -4,6 +4,7 @@ namespace Shuba\SearchAggregator;
 
 use Dtkahl\ArrayTools\Map;
 use Shuba\SearchAggregator\Adapters\AdapterInterface;
+use Shuba\SearchAggregator\Helper\ExtendsMap;
 
 /**
  * Class Aggregator
@@ -17,15 +18,15 @@ class Aggregator
     private $searchAdapters = [];
 
     /**
-     * @var Map
+     * @var ExtendsMap
      */
     private $map;
 
     /**
      * Aggregator constructor.
-     * @param Map $map
+     * @param ExtendsMap $map
      */
-    public function __construct(Map $map)
+    public function __construct(ExtendsMap $map)
     {
         $this->map = $map;
     }
