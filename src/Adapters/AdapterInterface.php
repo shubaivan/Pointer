@@ -2,6 +2,8 @@
 
 namespace Shuba\SearchAggregator\Adapters;
 
+use Dtkahl\ArrayTools\Map;
+
 /**
  * Interface AdapterInterface
  * @package Shuba\SearchAggregator\Adapters
@@ -10,13 +12,13 @@ interface AdapterInterface
 {
     /**
      * @param string $query
-     * @return []
+     * @return Map
      */
     public function search(string $query);
 
     /**
      * @param string $body
-     * @return []
+     * @return Map
      */
     public function handleResult(string $body);
 

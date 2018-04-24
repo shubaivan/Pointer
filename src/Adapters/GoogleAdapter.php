@@ -2,7 +2,9 @@
 
 namespace Shuba\SearchAggregator\Adapters;
 
+use Dtkahl\ArrayTools\Map;
 use GuzzleHttp\ClientInterface;
+use Shuba\SearchAggregator\Results\ResultEntity;
 
 /**
  * Class GoogleAdapter
@@ -19,18 +21,25 @@ class GoogleAdapter implements AdapterInterface
     private $client;
 
     /**
+     * @var Map
+     */
+    private $map;
+
+    /**
      * GoogleAdapter constructor.
      * @param ClientInterface $client
+     * @param Map $map
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client, Map $map)
     {
         $this->client = $client;
+        $this->map = $map;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function search(string $query): array
+    public function search(string $query): Map
     {
         $response = $this->client
             ->request(
@@ -47,9 +56,8 @@ class GoogleAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function handleResult(string $body): array
+    public function handleResult(string $body): Map
     {
-        $result = [];
         $dom = new \DOMDocument();
         $dom->loadHTML($body);
         $h3Tags = $dom->getElementById('search')
@@ -59,11 +67,18 @@ class GoogleAdapter implements AdapterInterface
             $parent = $h3Tag->parentNode;
             $citeElement = $parent->getElementsByTagName('cite')[0];
             if ($citeElement) {
-                $result[self::SOURCE][$citeElement->nodeValue] = $h3Tag->nodeValue;
+                $resultEntity = (new ResultEntity)
+                    ->setTitle($h3Tag->nodeValue)
+                    ->setUrl($citeElement->nodeValue)
+                    ->addSource(self::SOURCE);
+
+                if (!$this->map->hasKeys($resultEntity())) {
+                    $this->map->set($resultEntity->getUrl(), $resultEntity);
+                };
             }
         }
 
-        return $result;
+        return $this->map;
     }
 
     public static function getName()

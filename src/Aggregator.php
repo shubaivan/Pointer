@@ -2,6 +2,7 @@
 
 namespace Shuba\SearchAggregator;
 
+use Dtkahl\ArrayTools\Map;
 use Shuba\SearchAggregator\Adapters\AdapterInterface;
 
 /**
@@ -16,9 +17,18 @@ class Aggregator
     private $searchAdapters = [];
 
     /**
-     * @var array
+     * @var Map
      */
-    private $result = [];
+    private $map;
+
+    /**
+     * Aggregator constructor.
+     * @param Map $map
+     */
+    public function __construct(Map $map)
+    {
+        $this->map = $map;
+    }
 
     /**
      * @param string $queryString
@@ -51,16 +61,16 @@ class Aggregator
      */
     public function getResult()
     {
-        return $this->result;
+        return $this->map->toArray();
     }
 
     /**
-     * @param array $results
+     * @param Map $results
      * @return $this
      */
-    private function setResult(array $results)
+    private function setResult(Map $results)
     {
-        $this->result = array_merge($this->getResult(), current($results));
+        $this->map = $this->map->merge($results);
 
         return $this;
     }

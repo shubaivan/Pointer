@@ -6,11 +6,12 @@ require_once 'vendor/autoload.php';
 use Shuba\SearchAggregator\Adapters\GoogleAdapter;
 use GuzzleHttp\Client;
 use Shuba\SearchAggregator\Aggregator;
+use Dtkahl\ArrayTools\Map;
 
 $client = new Client();
-$google = new GoogleAdapter($client);
+$google = new GoogleAdapter($client, new Map());
 
-$aggregator = new Aggregator();
+$aggregator = new Aggregator(new Map());
 try {
     $aggregator->setAdapterInterface($google);
     $aggregator->sendRequest('Cherkassy');
